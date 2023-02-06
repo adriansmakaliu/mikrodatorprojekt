@@ -1,0 +1,15 @@
+
+http://www.isy.liu.se/edu/kurs/TSEA82/atmelarduino/
+
+I Microchip Studio Tools/External Tools/Command skriv
+
+K:\TSIU51\AvrDude\avrdude.exe
+
+I Arguments skriv
+
+"-C" "K:\TSIU51\AvrDude\avrdude.conf" -p atmega328p -c arduino -P COM11 -b 115200 -U flash:w:"$(ProjectDir)Debug\$(TargetName).hex":i
+
+Använd sedan Control Panel/Devices and Printers för att 
+hitta vilken COM-port arduinokortet ligger på. 
+
+Byt COM11 ovan till nåt bättre.
