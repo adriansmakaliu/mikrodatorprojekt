@@ -1,0 +1,3 @@
+Tisdag 7:e februari
+
+- Fixat till (nästan) rätt delay för SDA och SCL så att LCD-displayen kan läsa av data, dock bara för adressen och en enda dataram.
