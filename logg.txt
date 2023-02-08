@@ -1,0 +1,8 @@
+Tisdag 7:e februari
+
+- Fixat till (nästan) rätt delay för SDA och SCL så att LCD-displayen kan läsa av data, dock bara för adressen och en enda dataram.
+
+Onsdag 8:e februari
+
+- Förbättrad STOP-villkoret, dock har problem med att läsa av ACK/NACK. Om jag sätter DDRC4 till 0 så att den kan ta in data så blir den automatiskt hög 
+  (inbyggt pull-up resistor kanske?) och Waveforms läser den av som ett STOP-villkor.
