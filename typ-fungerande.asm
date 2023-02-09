@@ -1,10 +1,10 @@
-
-.equ displayOn1 = 0b00001100
-.equ displayOn2 = 0b11111100
+		          //d4 d5 d6 d7 bkl e rw rs -> d0 d1 d2 d3 bkl e rw rs
+.equ displayOn1 = 0b01000100 //set display
+.equ displayOn2 = 0b11111100 //set display
 
 ;.equ data = 0x00
 ;.equ data2 = 0x00
-.equ lcdaddr= $40
+.equ lcdaddr= $4E
 
 HWINIT:
 	rjmp ADDRINIT ; rjmp då det är inte tänkt att mman ska återkomma ofta till hwinit
