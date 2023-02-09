@@ -1,8 +1,9 @@
 
+.equ displayOn1 = 0b00001100
+.equ displayOn2 = 0b11111100
 
-.equ functionSet = 0b00001000 ; LCD datablad s.23-24
-.equ data = 0xAB
-.equ data2 = 0xCD
+;.equ data = 0x00
+;.equ data2 = 0x00
 .equ lcdaddr= $40
 
 HWINIT:
@@ -119,12 +120,12 @@ REGCHECK: ; kollar r20 för att se om adressen eller datan är skickat
 	call STOP
 
 DATAINIT:
-	ldi r16, data 
+	ldi r16, displayOn1
 	ldi r17, 8 ; sätter att datan består av 8 bitar
 	call SEND
 
 DATAINIT2:
-	ldi r16, data2
+	ldi r16, displayOn2
 	ldi r17, 8
 	call SEND
 
