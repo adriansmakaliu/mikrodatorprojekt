@@ -1,10 +1,11 @@
-		          //d4 d5 d6 d7 bkl e rw rs -> d0 d1 d2 d3 bkl e rw rs
-.equ displayOn1 = 0b01000100 //set display
-.equ displayOn2 = 0b11111100 //set display
+
+			          //d4 d5 d6 d7 bkl e rw rs -> d0 d1 d2 d3 bkl e rw rs
+.equ displayOn1 = 0b00011101;0xEC //set display //set fist EN pin low then high with same command then low with same command
+.equ displayOn2 = 0b11111001 //set display
 
 ;.equ data = 0x00
 ;.equ data2 = 0x00
-.equ lcdaddr= $4E
+.equ lcdaddr= $40
 
 HWINIT:
 	rjmp ADDRINIT ; rjmp då det är inte tänkt att mman ska återkomma ofta till hwinit
@@ -108,6 +109,7 @@ ACKNACK: ; 1 motsvarar fel med att skicka info
 	call STOP; stoppar hela processen om en 1 läses
 	sbi DDRC, 4
 	inc r20 ; 1 betyder att adressen är skickat och att r16 kan skrivas över
+	call DELAYDEBUG ; delay efter acknack biten
 	call REGCHECK
 
 REGCHECK: ; kollar r20 för att se om adressen eller datan är skickat
