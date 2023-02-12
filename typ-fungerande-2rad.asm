@@ -1,10 +1,11 @@
 
-			          //d4 d5 d6 d7 bkl e rw rs -> d0 d1 d2 d3 bkl e rw rs
-.equ displayOn1 = 0b00101000;0b00101000 shows 2 lines?;01001100 //set display //sedn fist EN pin low then high with same command then low with same command
-.equ displayOn2 = 0b0 //set display
 
-;.equ data = 0x00
-;.equ data2 = 0x00
+			        //d4 d5 d6 d7 bkl e rw rs -> d0 d1 d2 d3 bkl e rw rs
+.equ data1 = 0b01000100 //set display //set fist EN pin low then high with same command then low with same command
+.equ data2 = 0b00001000 //set display
+.equ data3 = 0b11110100
+.equ data4 = 0b00001000
+
 .equ lcdaddr= $40
 
 HWINIT:
@@ -116,18 +117,30 @@ REGCHECK: ; kollar r20 för att se om adressen eller datan är skickat
 	cpi r20, 1 ; adressöverföring klar
 	breq DATAINIT ; dataöverföringen påbörjas om adressen är skickat
 	cpi r20, 2 ; dataöverföring klar
-	breq STOP;DATAINIT2 ; andra dataramen skickas
+	breq DATAINIT2 ; andra dataramen skickas
 	cpi r20, 3
-	breq STOP
+	breq DATAINIT3
+	cpi r20, 4
+	breq DATAINIT4
 	call STOP
 
 DATAINIT:
-	ldi r16, displayOn1
+	ldi r16, data1
 	ldi r17, 8 ; sätter att datan består av 8 bitar
 	call SEND
 
 DATAINIT2:
-	ldi r16, displayOn2
+	ldi r16, data2
+	ldi r17, 8
+	call SEND
+
+DATAINIT3:
+	ldi r16, data3
+	ldi r17, 8
+	call SEND
+
+DATAINIT4:
+	ldi r16, data4
 	ldi r17, 8
 	call SEND
 
