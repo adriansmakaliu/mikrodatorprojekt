@@ -5,23 +5,31 @@
 .equ SDA = PC4
 .equ SCL = PC5
 .equ dataLen = 8
-.equ delayExtLen = 10
+.equ delayExtLen = 100 // OBS! LÅNG DELAY, BÖR OPTIMERAS ASAP!!!
 .equ delayIntLen = 0xFF
-.equ data = 0b00100100
+.equ data = 0b00011100
+.equ dispInitSeq = 1
+.equ dispFunSet = 0b10111100
 
 ;lookup: .db 
 
 HWINIT:
 	ldi r16, addr ; sparar adressen
 	ldi r17, 8 ; sparar 7 bitars adress + RW biten
-	rjmp START
+	rjmp DISPINIT
+
+DISPINIT:
+	ldi r16, 0b00111100
+	inc r21
+	call SEND
+	
 
 START:
 	sbi DDRC, SDA
 	call DELAY
 	sbi DDRC, SCL
 	call DELAY
-	call SEND
+	call DISPINIT
 
 SEND:
 	sbrs r16, 7
@@ -34,18 +42,20 @@ SEND:
 ACKNACK:
 	cbi DDRC, SDA
 	call CLKPULSE
-	sbic PINC, SDA
+	sbic DDRC, SDA
 	call STOP
 	inc r20
 	call DATACHECK
 
 DATACHECK: ; kollar vilken data ska skickas ut
-	cpi r20, 1
-	breq DATAENL
+	cpi r20, 1 ; adressen skickat
+	breq DATAENL ;skickar 1a dataram
 	cpi r20, 2
-	breq DATAENH
+	breq DATAENH ; skickar 2a dataram
 	cpi r20, 3
-	breq DATAENL
+	breq DATAENL ; skickar 3e dataram
+	cpi r21, 3
+	brne DISPINIT
 	call STOP
 
 STOP:
@@ -60,12 +70,12 @@ IDLE:
 	jmp IDLE
 
 DATAENH:
-	ldi r16, data 
+	;ldi r16, data
 	ldi r17, dataLen
 	ret
 
 DATAENL:
-	ldi r16, data
+	;ldi r16, data
 	ldi r17, dataLen
 	andi r16, 0b11111011
 	ret
